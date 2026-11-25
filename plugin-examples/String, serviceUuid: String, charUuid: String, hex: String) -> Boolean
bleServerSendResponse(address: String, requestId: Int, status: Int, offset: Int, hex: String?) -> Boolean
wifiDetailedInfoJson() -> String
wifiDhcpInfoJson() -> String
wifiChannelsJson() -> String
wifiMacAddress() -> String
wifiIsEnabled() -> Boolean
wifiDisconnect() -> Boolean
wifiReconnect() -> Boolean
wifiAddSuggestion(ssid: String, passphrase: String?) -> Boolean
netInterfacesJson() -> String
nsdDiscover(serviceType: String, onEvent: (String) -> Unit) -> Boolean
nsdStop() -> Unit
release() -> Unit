@@ -1,0 +1,14 @@
+String, serviceUuid: String, charUuid: String, hex: String) -> Boolean
+bleServerSendResponse(address: String, requestId: Int, status: Int, offset: Int, hex: String?) -> Boolean
+wifiDetailedInfoJson() -> String
+wifiDhcpInfoJson() -> String
+wifiChannelsJson() -> String
+wifiMacAddress() -> String
+wifiIsEnabled() -> Boolean
+wifiDisconnect() -> Boolean
+wifiReconnect() -> Boolean
+wifiAddSuggestion(ssid: String, passphrase: String?) -> Boolean
+netInterfacesJson() -> String
+nsdDiscover(serviceType: String, onEvent: (String) -> Unit) -> Boolean
+nsdStop() -> Unit
+release() -> Unit
