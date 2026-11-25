@@ -1,0 +1,27 @@
+rootAmBroadcast(action: String, callback: (String) -> Unit) -> Unit
+rootSettingsGet(namespace: String, key: String, callback: (String) -> Unit) -> Unit
+rootSettingsPut(namespace: String, key: String, value: String, callback: (String) -> Unit) -> Unit
+rootIptables(args: String, callback: (String) -> Unit) -> Unit
+rootIp(args: String, callback: (String) -> Unit) -> Unit
+rootIfconfig(callback: (String) -> Unit) -> Unit
+rootSysctl(key: String?, value: String?, callback: (String) -> Unit) -> Unit
+rootDmesg(lines: Int, callback: (String) -> Unit) -> Unit
+rootLogcat(lines: Int, callback: (String) -> Unit) -> Unit
+rootDumpsys(service: String, callback: (String) -> Unit) -> Unit
+rootInputTap(x: Int, y: Int, callback: (String) -> Unit) -> Unit
+rootInputSwipe(x1: Int, y1: Int, x2: Int, y2: Int, durationMs: Int, callback: (String) -> Unit) -> Unit
+rootInputText(text: String, callback: (String) -> Unit) -> Unit
+rootInputKeyevent(keycode: Int, callback: (String) -> Unit) -> Unit
+rootScreencap(destPath: String, callback: (String) -> Unit) -> Unit
+rootScreenrecord(destPath: String, durationSec: Int, callback: (String) -> Unit) -> Unit
+rootWmSize(callback: (String) -> Unit) -> Unit
+rootWmDensity(callback: (String) -> Unit) -> Unit
+rootSelinux(callback: (String) -> Unit) -> Unit
+rootMagiskModules(callback: (String) -> Unit) -> Unit
+rootMagiskInstallModule(zipPath: String, callback: (String) -> Unit) -> Unit
+rootMacSpoof(iface: String, newMac: String, callback: (String) -> Unit) -> Unit
+shizukuAvailable() -> Boolean
+shizukuHasPermission() -> Boolean
+shizukuRequestPermission() -> Unit
+shizukuExec(command: String, callback: (String) -> Unit) -> Unit
+shellExecSmart(command: String, callback: (String) -> Unit) -> Unit
