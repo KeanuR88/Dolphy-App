@@ -1,0 +1,4 @@
+registerBleMode(modeId, title, description="", icon="bluetooth_searching", order=0) -> Boolean
+assetPath(path) -> String?
+downloadAssets(itemsJson, callback) -> Boolean
+applyAsset(type, path, title="") -> String
