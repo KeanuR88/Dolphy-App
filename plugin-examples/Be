@@ -1,0 +1,4 @@
+register_ble_mode(mode_id, title, description="", icon="bluetooth_searching", order=0) -> Boolean
+asset_path(path) -> String?
+download_assets(items, on_result) -> Boolean
+apply_asset(asset_type, path, title="") -> dict
