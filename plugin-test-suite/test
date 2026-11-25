@@ -1,0 +1,280 @@
+__id__ = "dolphy_universal_toolkit"
+__name__ = "Dolphy Universal Toolkit"
+__version__ = "1.0.0"
+__icon__ = "extension"
+
+import json
+
+
+class DolphyUniversalToolkit(BasePlugin):
+
+    def on_plugin_load(self):
+        self.devices = []
+        self.running = False
+        self.delay_ms = 1000
+        self.current_route = ""
+
+        self.register_ble_mode(
+            "lab_beacon",
+            "Lab Beacon",
+            "Custom BLE beacon mode",
+            "radar",
+            100,
+        )
+
+        self.register_module(
+            "PLUGINS",
+            "Universal Toolkit",
+            "BLE, IR, assets, NFC, and Java tools",
+            "extension",
+            "toolkit_main",
+            100,
+        )
+
+        self.register_settings(
+            "Universal Toolkit Settings",
+            json.dumps([
+                {
+                    "key": "scan_delay",
+                    "title": "Scan delay",
+                    "type": "number",
+                    "default": 350,
+                },
+            ]),
+            100,
+        )
+
+        self.hook_screen("ble_section/*", "toolkit_ble", "overlay", 100)
+        self.hook_screen("nfc_*", "toolkit_nfc", "fab", 50)
+        self.hook_screen("ir_*", "toolkit_ir", "fab", 50)
+
+        self.hook_action("infrared.transmit", 100)
+        self.hook_action("bluetooth.advertising.transmit", 100)
+        self.hook_action("bluetooth.advert.preset.*", 80)
+
+        self.provide_service("infrared.transmitter", 100)
+        self.start_ble_scan()
+
+    def on_plugin_unload(self):
+        self.running = False
+        self.bleStopScan("nearby")
+
+    def on_navigation(self, route):
+        self.current_route = str(route)
+
+    def start_ble_scan(self):
+        delay = self.get_setting("scan_delay", 350)
+
+        try:
+            delay = int(delay)
+        except (TypeError, ValueError):
+            delay = 350
+
+        return self.api.bleStartScan(
+            "nearby",
+            self.on_ble_batch,
+            delay,
+            128,
+        )
+
+    def on_ble_batch(self, payload_json):
+        try:
+            devices = json.loads(str(payload_json))
+        except (TypeError, json.JSONDecodeError):
+            devices = []
+
+        if isinstance(devices, list):
+            self.devices = devices
+            self.refresh()
+
+    def stop_ble_scan(self):
+        return self.api.bleStopScan("nearby")
+
+    def connect_gatt(self, address):
+        android = self.api.getAndroid()
+
+        if android is None:
+            return False
+
+        return android.gattConnect(address, self.on_gatt_event)
+
+    def on_gatt_event(self, payload_json):
+        try:
+            event = json.loads(str(payload_json))
+        except (TypeError, json.JSONDecodeError):
+            event = {}
+
+        self.log_panel(json.dumps(event, indent=2))
+
+    def on_ble_mode_start(self, payload):
+        if payload.get("modeId") == "lab_beacon":
+            self.running = True
+            self.toast("Lab Beacon started")
+
+    def on_ble_mode_delay_changed(self, payload):
+        try:
+            self.delay_ms = int(payload.get("delayMs", 1000))
+        except (TypeError, ValueError):
+            pass
+
+    def on_ble_mode_stop(self, payload):
+        self.running = False
+        self.toast("Lab Beacon stopped")
+
+    def fetch_remote_asset(self):
+        files = [{
+            "url": "https://example.org/remotes/tv.ir",
+            "path": "remotes/tv.ir",
+            "sizeBytes": 24576,
+            "maxBytes": 100000,
+            "sha256": "replace-with-the-published-sha256",
+        }]
+
+        return self.download_assets(
+            files,
+            self.on_asset_downloaded,
+        )
+
+    def on_asset_downloaded(self, result_json):
+        try:
+            result = json.loads(str(result_json))
+        except (TypeError, json.JSONDecodeError):
+            result = {}
+
+        if not result.get("ok"):
+            self.toast("Asset download failed")
+            return
+
+        ok = self.apply_asset(
+            "ir_remote",
+            "remotes/tv.ir",
+            "My TV",
+        )
+
+        self.toast("Asset installed" if ok else "Asset application failed")
+
+    def normalize_frequency(self, frequency):
+        try:
+            value = int(frequency)
+        except (TypeError, ValueError):
+            return 38000
+
+        return value if 20000 <= value <= 100000 else 38000
+
+    def hook_infrared_transmit(self, payload):
+        android = self.api.getAndroid()
+
+        if android is None:
+            return {"handled": False}
+
+        frequency = self.normalize_frequency(payload["frequency"])
+        pattern = [int(value) for value in payload["pattern"]]
+
+        result = android.irTransmit(frequency, pattern)
+
+        return {
+            "handled": True,
+            "result": result,
+        }
+
+    def service_infrared_transmitter_available(self, payload):
+        return {
+            "available": self.api.getAndroid() is not None,
+        }
+
+    def service_infrared_transmitter_transmit(self, payload):
+        return self.hook_infrared_transmit(payload)
+
+    def hook_bluetooth_advertising_transmit(self, payload):
+        packet = payload.get("data")
+
+        if not isinstance(packet, dict):
+            return None
+
+        packet["includeDeviceName"] = False
+        return {"payload": payload}
+
+    def hook_bluetooth_advert_preset(self, payload):
+        packet = payload.get("data")
+
+        if isinstance(packet, dict):
+            packet["pluginPreset"] = True
+
+        return {"payload": payload}
+
+    def inspect_app_class(self):
+        java_class = self.find_java_class(
+            "com.droid.dolphy.MainActivity"
+        )
+
+        if java_class is None:
+            return None
+
+        description = self.inspect_java_class(java_class)
+
+        self.export_java_class(
+            "dolphy.main_activity",
+            java_class,
+        )
+
+        return description
+
+    def screen_toolkit_main(self, ui, api, state):
+        return ui.scaffold(
+            title="Dolphy Toolkit",
+            content=ui.column([
+                ui.text("Universal Dolphy plugin"),
+                ui.button(
+                    "Start BLE scan",
+                    lambda: self.start_ble_scan(),
+                ),
+                ui.button(
+                    "Stop BLE scan",
+                    lambda: self.stop_ble_scan(),
+                ),
+                ui.button(
+                    "Download asset",
+                    lambda: self.fetch_remote_asset(),
+                ),
+                ui.button(
+                    "Inspect MainActivity",
+                    lambda: self.inspect_app_class(),
+                ),
+            ], padding=16, spacing=12),
+        )
+
+    def screen_toolkit_ble(self, ui, api, state):
+        return ui.scaffold(
+            title="BLE tools",
+            content=ui.column([
+                ui.text("BLE scanner active"),
+                ui.button(
+                    "Start scan",
+                    lambda: self.start_ble_scan(),
+                ),
+                ui.button(
+                    "Stop scan",
+                    lambda: self.stop_ble_scan(),
+                ),
+            ], padding=16, spacing=12),
+        )
+
+    def screen_toolkit_ir(self, ui, api, state):
+        return ui.scaffold(
+            title="IR tools",
+            content=ui.column([
+                ui.text("Ready for infrared actions"),
+                ui.button(
+                    "Download remote",
+                    lambda: self.fetch_remote_asset(),
+                ),
+            ], padding=16, spacing=12),
+        )
+
+    def screen_toolkit_nfc(self, ui, api, state):
+        return ui.scaffold(
+            title="NFC tools",
+            content=ui.column([
+                ui.text("NFC hook active"),
+            ], padding=16, spacing=12),
+        )
