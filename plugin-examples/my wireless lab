@@ -7,4 +7,265 @@ __icon__ = "rounded:radar"
 __library__ = False
 __design_library__ = False
 __dependencies__ = ["shared_radio_core"]
-__permissions__ = ["ble_spam", "download", "files"]
+__permissions__ = ["ble_spam", "download", "files"]register_ble_mode(mode_id, title, description="", icon="bluetooth_searching", order=0) -> Boolean
+asset_path(path) -> String?
+download_assets(items, on_result) -> Boolean
+apply_asset(asset_type, path, title="") -> dictfind_java_class(class_name) -> Class?
+inspect_java_class(java_class) -> dict
+get_java_field(target, field_name) -> Object?
+set_java_field(target, field_name, value) -> Boolean
+invoke_java(target, method_name, *args) -> Object?
+new_java_instance(java_class, *args) -> Objecton_select=None, title="")
+dropdown(options, selected, on_select=None, label="", enabled=True)
+webview(url="", html="", fill_max_size=True, height=320)
+log_panel(text, max_height=200)
+alert_dialog(show, title, message, confirm_text="OK", dismiss_text="Cancel", on_confirm=None, on_dismiss=None, cancelable=True)
+empty()getContext()
+getApplicationContext()
+getActivity()
+getClassLoader()
+getAndroid()
+getDevice()
+getPluginId()
+getDependencies() -> Array<String>
+getDependencyClassLoader() -> ClassLoader
+registerModule(section, title, description, icon, screenId, order)
+registerSettings(title, itemsJson, order=0)
+registerScreenHook(routePattern, screenId, mode="overlay", priority=0)
+registerSurfaceHook(surface, screenId, mode="overlay", priority=0)
+registerService(serviceId, priority=0)
+registerActionHook(actionPattern, priority=0)
+loadDexBase64(moduleName, encoded, sha256) -> ClassLoader
+loadDexFile(moduleName, path, sha256) -> ClassLoader
+getDexClassLoader(moduleName) -> ClassLoader?
+loadDexClass(moduleName, className) -> Class
+newDexInstance(moduleName, className) -> Object
+exportDexClass(exportName, moduleName, className) -> Boolean
+exportAppClass(exportName, className) -> Boolean
+exportJavaClass(exportName, type) -> Boolean
+importJavaClass(exportName) -> Class?
+exportJavaObject(exportName, value) -> Boolean
+importJavaObject(exportName) -> Object?
+listJavaExports() -> String
+navigate(screenId)
+refresh()
+toast(text)
+getSettingJson(key, fallbackJson)
+setSettingJson(key, valueJson)
+shellExec(command)
+rootExec(command)
+shizukuExec(command)
+smartExec(command)
+bleStartScan(scanId, callback, batchMs=350, maxDevices=128)
+bleStopScan(scanId)
+release()registerBleMode(modeId, title, description="", icon="bluetooth_searching", order=0) -> Boolean
+assetPath(path) -> String?
+downloadAssets(itemsJson, callback) -> Boolean
+applyAsset(type, path, title="") -> StringfindJavaClass(className) -> Class?
+inspectJavaClass(type) -> String
+getJavaField(target, fieldName) -> Object?
+setJavaField(target, fieldName, value) -> Boolean
+invokeJava(target, methodName, args) -> Object?
+newJavaInstance(type, args) -> ObjectString, serviceUuid: String, charUuid: String, hex: String) -> Boolean
+bleServerSendResponse(address: String, requestId: Int, status: Int, offset: Int, hex: String?) -> Boolean
+wifiDetailedInfoJson() -> String
+wifiDhcpInfoJson() -> String
+wifiChannelsJson() -> String
+wifiMacAddress() -> String
+wifiIsEnabled() -> Boolean
+wifiDisconnect() -> Boolean
+wifiReconnect() -> Boolean
+wifiAddSuggestion(ssid: String, passphrase: String?) -> Boolean
+netInterfacesJson() -> String
+nsdDiscover(serviceType: String, onEvent: (String) -> Unit) -> Boolean
+nsdStop() -> Unit
+release() -> UnitrootAmBroadcast(action: String, callback: (String) -> Unit) -> Unit
+rootSettingsGet(namespace: String, key: String, callback: (String) -> Unit) -> Unit
+rootSettingsPut(namespace: String, key: String, value: String, callback: (String) -> Unit) -> Unit
+rootIptables(args: String, callback: (String) -> Unit) -> Unit
+rootIp(args: String, callback: (String) -> Unit) -> Unit
+rootIfconfig(callback: (String) -> Unit) -> Unit
+rootSysctl(key: String?, value: String?, callback: (String) -> Unit) -> Unit
+rootDmesg(lines: Int, callback: (String) -> Unit) -> Unit
+rootLogcat(lines: Int, callback: (String) -> Unit) -> Unit
+rootDumpsys(service: String, callback: (String) -> Unit) -> Unit
+rootInputTap(x: Int, y: Int, callback: (String) -> Unit) -> Unit
+rootInputSwipe(x1: Int, y1: Int, x2: Int, y2: Int, durationMs: Int, callback: (String) -> Unit) -> Unit
+rootInputText(text: String, callback: (String) -> Unit) -> Unit
+rootInputKeyevent(keycode: Int, callback: (String) -> Unit) -> Unit
+rootScreencap(destPath: String, callback: (String) -> Unit) -> Unit
+rootScreenrecord(destPath: String, durationSec: Int, callback: (String) -> Unit) -> Unit
+rootWmSize(callback: (String) -> Unit) -> Unit
+rootWmDensity(callback: (String) -> Unit) -> Unit
+rootSelinux(callback: (String) -> Unit) -> Unit
+rootMagiskModules(callback: (String) -> Unit) -> Unit
+rootMagiskInstallModule(zipPath: String, callback: (String) -> Unit) -> Unit
+rootMacSpoof(iface: String, newMac: String, callback: (String) -> Unit) -> Unit
+shizukuAvailable() -> Boolean
+shizukuHasPermission() -> Boolean
+shizukuRequestPermission() -> Unit
+shizukuExec(command: String, callback: (String) -> Unit) -> Unit
+shellExecSmart(command: String, callback: (String) -> Unit) -> Unitadd_module(title, description="", icon="extension", screen="main", section="PLUGINS", order=0)
+navigate(screen)
+navigate_app(route)
+refresh()
+get_setting(key, default=None)
+set_setting(key, value)
+toast(text)
+hook_screen(route, screen="main", mode="overlay", priority=0)
+hook_surface(surface, screen="main", mode="overlay", priority=0)
+hook_action(action, priority=0)
+provide_service(service, priority=0)
+load_dex_base64(module, encoded, sha256="")
+load_dex_file(module, path, sha256="")
+dex_class(module, class_name)
+new_dex_instance(module, class_name)
+export_dex_class(name, module, class_name)
+export_app_class(name, class_name)
+export_java_class(name, java_class)
+import_java_class(name)
+export_java_object(name, value)
+import_java_object(name)
+java_exports()
+shell(command)
+root(command)
+shizuku(command)import json
+
+class HardwarePlugin(BasePlugin):
+    def on_plugin_load(self):
+        self.devices = []
+        self.api.bleStartScan("nearby", self.on_ble_batch, 350, 128)
+
+    def on_ble_batch(self, payload_json):
+        self.devices = json.loads(str(payload_json))
+        self.refresh()
+
+    def connect_gatt(self, address):
+        android = self.api.getAndroid()
+        return android.gattConnect(address, self.on_gatt_event)
+
+    def on_gatt_event(self, payload_json):
+        event = json.loads(str(payload_json))
+
+    def on_plugin_unload(self):
+        self.api.bleStopScan("nearby")
+        self.api.getAndroid().release()getContext()
+getApplicationContext()
+getActivity()
+getClassLoader()
+getAndroid()
+getDevice()
+getPluginId()
+getDependencies()
+getDependencyClassLoader()
+registerModule(section, title, description, icon, screenId, order)
+registerSettings(title, itemsJson, order=0)
+registerScreenHook(routePattern, screenId, mode="overlay", priority=0)
+registerSurfaceHook(surface, screenId, mode="overlay", priority=0)
+registerService(serviceId, priority=0)
+registerActionHook(actionPattern, priority=0)
+loadDexBase64(moduleName, encoded, sha256)
+loadDexFile(moduleName, path, sha256)
+getDexClassLoader(moduleName)
+loadDexClass(moduleName, className)
+newDexInstance(moduleName, className)
+exportDexClass(exportName, moduleName, className)
+exportAppClass(exportName, className)
+exportJavaClass(exportName, type)
+importJavaClass(exportName)
+exportJavaObject(exportName, value)
+importJavaObject(exportName)
+listJavaExports()
+navigate(screenId)
+refresh()
+toast(text)
+getSettingJson(key, fallbackJson)
+setSettingJson(key, valueJson)
+shellExec(command)
+rootExec(command)
+shizukuExec(command)
+smartExec(command)
+bleStartScan(scanId, callback, batchMs=350, maxDevices=128)
+bleStopScan(scanId)
+release()*Json() → str; use json.loads(...)
+HEX → even-length hexadecimal text
+callbacks → JSON str or primitive
+scanId/address → resource key
+stop/release → explicit cleanup
+Boolean false → unsupported, denied or failed
+{ok,code,out,err,via} → command result48 MiB source
+32 MiB decoded module
+SHA-256
+read-only code cache
+process-local exports__id__ = "dolphy_reflection_facade"
+__name__ = "Dolphy Reflection Facade"
+__library__ = True
+
+class ReflectionFacade(BasePlugin):
+    def on_plugin_load(self):
+        activity_class = self.find_java_class("com.droid.dolphy.MainActivity")
+        if activity_class is None:
+            raise RuntimeError("MainActivity class is unavailable")
+        description = self.inspect_java_class(activity_class)
+        self.export_java_class("dolphy.main_activity", activity_class)
+        self.set_setting("known_methods", [item["name"] for item in description["methods"]])def on_plugin_load(self):
+    self.export_app_class(
+        "dolphy.main_activity",
+        "com.droid.dolphy.MainActivity"
+    )
+    activity_class = self.import_java_class("dolphy.main_activity")
+    methods = [method.getName() for method in activity_class.getDeclaredMethods()]__id__ = "shared_radio_core"
+__name__ = "Shared Radio Core"
+__version__ = "1.0.0"
+__library__ = True
+
+DEX_SHA256 = "48c3cb64ad3c0e82b7352549f7568e4e42119fc6b066a050054474e6fffca28c"
+DEX_BASE64 = "ZGV4CjAzNQ..."
+
+class SharedRadioCore(BasePlugin):
+    def on_plugin_load(self):
+        loader = self.load_dex_base64("radio_core", DEX_BASE64, DEX_SHA256)
+        bridge_class = loader.loadClass("dev.dolphy.radio.RadioBridge")
+        constructor = bridge_class.getDeclaredConstructor()
+        constructor.setAccessible(True)
+        bridge = constructor.newInstance()
+        self.export_java_class("radio.bridge.class", bridge_class)
+        self.export_java_object("radio.bridge", bridge)
+
+    def on_plugin_unload(self):
+        bridge = self.import_java_object("radio.bridge")
+        if bridge is not None:
+            bridge.close()__id__ = "ir_storm_hook"
+__name__ = "IR Storm Hook"
+__version__ = "1.0.0"
+__icon__ = "rounded:settings_input_antenna"
+
+from java import jarray, jint
+
+class IrStormHook(BasePlugin):
+    def __init__(self):
+        super().__init__()
+        self.current_route = ""
+
+    def on_plugin_load(self):
+        self.hook_action("infrared.transmit", 100)
+
+    def on_navigation(self, route):
+        self.current_route = str(route)
+
+    def hook_infrared_transmit(self, payload):
+        if self.current_route not in ("ir_storm", "other/ir_storm"):
+            return None
+
+        frequency = int(payload["frequency"])
+        pattern = [int(value) for value in payload["pattern"]]
+        ok = self.send_to_external_ir(frequency, pattern)
+        return {
+            "handled": True,
+            "result": ok
+        }
+
+    def send_to_external_ir(self, frequency, pattern):
+        android = self.api.getAndroid()
+        java_pattern = jarray(jint)(pattern)
+        return android.irTransmit(frequency, java_pattern)
