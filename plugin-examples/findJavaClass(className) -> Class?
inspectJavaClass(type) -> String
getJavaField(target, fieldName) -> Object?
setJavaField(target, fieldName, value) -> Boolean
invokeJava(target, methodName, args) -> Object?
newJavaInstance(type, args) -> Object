@@ -1,0 +1,6 @@
+findJavaClass(className) -> Class?
+inspectJavaClass(type) -> String
+getJavaField(target, fieldName) -> Object?
+setJavaField(target, fieldName, value) -> Boolean
+invokeJava(target, methodName, args) -> Object?
+newJavaInstance(type, args) -> Object
