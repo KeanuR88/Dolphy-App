@@ -1,0 +1,12 @@
+def on_plugin_load(self):
+    self.hook_action("bluetooth.advertising.transmit", 100)
+    self.hook_action("bluetooth.advert.preset.*", 80)
+
+def hook_bluetooth_advertising_transmit(self, payload):
+    source = payload["metadata"]["source"]
+    packet = payload["data"]
+    if self.external_radio_ready():
+        self.send_external(packet, payload.get("scanResponse"))
+        return {"handled": True}
+    packet["includeDeviceName"] = False
+    return {"payload": payload}
