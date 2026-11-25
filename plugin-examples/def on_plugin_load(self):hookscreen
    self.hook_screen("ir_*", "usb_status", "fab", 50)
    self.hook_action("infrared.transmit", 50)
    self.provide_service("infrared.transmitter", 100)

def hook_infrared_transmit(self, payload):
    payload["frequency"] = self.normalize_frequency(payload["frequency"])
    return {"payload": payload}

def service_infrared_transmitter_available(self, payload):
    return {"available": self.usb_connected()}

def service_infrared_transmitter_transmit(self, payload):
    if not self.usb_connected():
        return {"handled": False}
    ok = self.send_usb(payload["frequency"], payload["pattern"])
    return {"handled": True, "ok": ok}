@@ -1,0 +1,17 @@
+def on_plugin_load(self):
+    self.hook_screen("ir_*", "usb_status", "fab", 50)
+    self.hook_action("infrared.transmit", 50)
+    self.provide_service("infrared.transmitter", 100)
+
+def hook_infrared_transmit(self, payload):
+    payload["frequency"] = self.normalize_frequency(payload["frequency"])
+    return {"payload": payload}
+
+def service_infrared_transmitter_available(self, payload):
+    return {"available": self.usb_connected()}
+
+def service_infrared_transmitter_transmit(self, payload):
+    if not self.usb_connected():
+        return {"handled": False}
+    ok = self.send_usb(payload["frequency"], payload["pattern"])
+    return {"handled": True, "ok": ok}
