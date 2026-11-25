@@ -1,0 +1,22 @@
+__id__ = "shared_radio_core"
+__name__ = "Shared Radio Core"
+__version__ = "1.0.0"
+__library__ = True
+
+DEX_SHA256 = "48c3cb64ad3c0e82b7352549f7568e4e42119fc6b066a050054474e6fffca28c"
+DEX_BASE64 = "ZGV4CjAzNQ..."
+
+class SharedRadioCore(BasePlugin):
+    def on_plugin_load(self):
+        loader = self.load_dex_base64("radio_core", DEX_BASE64, DEX_SHA256)
+        bridge_class = loader.loadClass("dev.dolphy.radio.RadioBridge")
+        constructor = bridge_class.getDeclaredConstructor()
+        constructor.setAccessible(True)
+        bridge = constructor.newInstance()
+        self.export_java_class("radio.bridge.class", bridge_class)
+        self.export_java_object("radio.bridge", bridge)
+
+    def on_plugin_unload(self):
+        bridge = self.import_java_object("radio.bridge")
+        if bridge is not None:
+            bridge.close()
