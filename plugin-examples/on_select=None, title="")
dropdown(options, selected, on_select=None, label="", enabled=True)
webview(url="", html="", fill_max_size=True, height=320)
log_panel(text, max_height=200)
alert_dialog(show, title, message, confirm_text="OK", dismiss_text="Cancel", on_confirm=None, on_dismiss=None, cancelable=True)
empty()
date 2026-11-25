@@ -1,0 +1,6 @@
+on_select=None, title="")
+dropdown(options, selected, on_select=None, label="", enabled=True)
+webview(url="", html="", fill_max_size=True, height=320)
+log_panel(text, max_height=200)
+alert_dialog(show, title, message, confirm_text="OK", dismiss_text="Cancel", on_confirm=None, on_dismiss=None, cancelable=True)
+empty()
