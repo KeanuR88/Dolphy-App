@@ -1,0 +1,7 @@
+*Json() → str; use json.loads(...)
+HEX → even-length hexadecimal text
+callbacks → JSON str or primitive
+scanId/address → resource key
+stop/release → explicit cleanup
+Boolean false → unsupported, denied or failed
+{ok,code,out,err,via} → command result
