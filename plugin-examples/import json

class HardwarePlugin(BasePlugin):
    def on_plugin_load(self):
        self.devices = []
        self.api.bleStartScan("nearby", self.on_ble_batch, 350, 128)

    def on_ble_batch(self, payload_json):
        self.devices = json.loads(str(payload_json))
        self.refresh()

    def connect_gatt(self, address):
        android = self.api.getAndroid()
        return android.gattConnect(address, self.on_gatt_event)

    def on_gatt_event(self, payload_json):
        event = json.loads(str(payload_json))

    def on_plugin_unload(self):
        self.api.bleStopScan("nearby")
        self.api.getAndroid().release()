@@ -1,0 +1,21 @@
+import json
+
+class HardwarePlugin(BasePlugin):
+    def on_plugin_load(self):
+        self.devices = []
+        self.api.bleStartScan("nearby", self.on_ble_batch, 350, 128)
+
+    def on_ble_batch(self, payload_json):
+        self.devices = json.loads(str(payload_json))
+        self.refresh()
+
+    def connect_gatt(self, address):
+        android = self.api.getAndroid()
+        return android.gattConnect(address, self.on_gatt_event)
+
+    def on_gatt_event(self, payload_json):
+        event = json.loads(str(payload_json))
+
+    def on_plugin_unload(self):
+        self.api.bleStopScan("nearby")
+        self.api.getAndroid().release()
