@@ -1,0 +1,15 @@
+def on_plugin_load(self):
+    self.register_ble_mode("lab_beacon", "Lab Beacon", "Custom advertising payload", "radar")
+
+def on_ble_mode_start(self, payload):
+    if payload["modeId"] == "lab_beacon":
+        self.start_loop(payload["delayMs"])
+
+def on_ble_mode_delay_changed(self, payload):
+    self.delay_ms = payload["delayMs"]
+
+def on_ble_mode_stop(self, payload):
+    self.stop_loop()
+
+def on_plugin_unload(self):
+    self.stop_loop()
