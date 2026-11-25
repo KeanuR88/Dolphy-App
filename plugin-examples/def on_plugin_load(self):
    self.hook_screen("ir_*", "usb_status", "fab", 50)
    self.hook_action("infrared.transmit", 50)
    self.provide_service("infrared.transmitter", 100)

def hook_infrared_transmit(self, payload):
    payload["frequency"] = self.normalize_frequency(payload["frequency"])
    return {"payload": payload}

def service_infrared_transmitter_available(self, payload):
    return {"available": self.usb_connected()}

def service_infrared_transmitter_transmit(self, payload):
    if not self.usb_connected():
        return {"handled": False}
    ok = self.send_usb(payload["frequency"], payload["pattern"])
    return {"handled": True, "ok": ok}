@@ -1,0 +1,7 @@
+def on_plugin_load(self):
+    self.export_app_class(
+        "dolphy.main_activity",
+        "com.droid.dolphy.MainActivity"
+    )
+    activity_class = self.import_java_class("dolphy.main_activity")
+    methods = [method.getName() for method in activity_class.getDeclaredMethods()]
