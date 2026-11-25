@@ -1,0 +1,9 @@
+def on_plugin_load(self):
+    self.hook_surface("bottom_bar", "custom_bar", "replace", 100)
+
+def screen_custom_bar(self, ui, api, state):
+    return ui.floating_toolbar([
+        ui.toolbar_item("bluetooth", lambda: self.navigate_app("bluetooth"), label="Bluetooth"),
+        ui.toolbar_item("extension", lambda: self.navigate_app("other"), label="Functions"),
+        ui.toolbar_item("settings", lambda: self.navigate_app("settings"), label="Settings")
+    ])
