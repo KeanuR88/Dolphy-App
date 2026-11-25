@@ -1,0 +1,27 @@
+def on_plugin_load(self):
+    self.hook_screen("ir_*", "ir_badge", "fab", 50)
+    self.hook_screen("nfc_tools", "nfc_panel", "bottom", 20)
+    self.hook_screen("qr_tools", "replacement", "replace", 100)
+
+def screen_ir_badge(self, ui, api, state):
+    return ui.icon_button("usb", lambda: self.navigate("hardware"))
+
+def screen_hardware(self, ui, api, state):
+    return ui.scaffold(
+        title="External hardware",
+        content=ui.text("Connected")
+    )
+
+def screen_nfc_panel(self, ui, api, state):
+    return ui.card([
+        ui.text("Plugin panel on the existing NFC screen")
+    ])
+
+def screen_replacement(self, ui, api, state):
+    return ui.scaffold(
+        title="My QR tools",
+        content=ui.column([
+            ui.text("This plugin replaced the built-in QR screen", "headlineSmall"),
+            ui.button("Open original section", lambda: self.navigate_app("other"))
+        ], padding=16, spacing=12, fill_max_size=True)
+    )
