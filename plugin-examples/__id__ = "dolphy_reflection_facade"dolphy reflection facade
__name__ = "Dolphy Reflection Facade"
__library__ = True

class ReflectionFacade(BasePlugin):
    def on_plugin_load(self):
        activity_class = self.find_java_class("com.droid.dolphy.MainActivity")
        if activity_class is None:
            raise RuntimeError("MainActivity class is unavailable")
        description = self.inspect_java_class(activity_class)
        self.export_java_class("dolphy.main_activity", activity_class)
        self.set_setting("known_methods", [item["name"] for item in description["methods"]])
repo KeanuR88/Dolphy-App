@@ -1,0 +1,12 @@
+__id__ = "dolphy_reflection_facade"
+__name__ = "Dolphy Reflection Facade"
+__library__ = True
+
+class ReflectionFacade(BasePlugin):
+    def on_plugin_load(self):
+        activity_class = self.find_java_class("com.droid.dolphy.MainActivity")
+        if activity_class is None:
+            raise RuntimeError("MainActivity class is unavailable")
+        description = self.inspect_java_class(activity_class)
+        self.export_java_class("dolphy.main_activity", activity_class)
+        self.set_setting("known_methods", [item["name"] for item in description["methods"]])
