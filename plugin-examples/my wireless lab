@@ -1,0 +1,10 @@
+__id__ = "my_wireless_lab"
+__name__ = "My Wireless Lab"
+__version__ = "1.0.0"
+__author__ = "Developer"
+__description__ = "Wireless diagnostics"
+__icon__ = "rounded:radar"
+__library__ = False
+__design_library__ = False
+__dependencies__ = ["shared_radio_core"]
+__permissions__ = ["ble_spam", "download", "files"]
