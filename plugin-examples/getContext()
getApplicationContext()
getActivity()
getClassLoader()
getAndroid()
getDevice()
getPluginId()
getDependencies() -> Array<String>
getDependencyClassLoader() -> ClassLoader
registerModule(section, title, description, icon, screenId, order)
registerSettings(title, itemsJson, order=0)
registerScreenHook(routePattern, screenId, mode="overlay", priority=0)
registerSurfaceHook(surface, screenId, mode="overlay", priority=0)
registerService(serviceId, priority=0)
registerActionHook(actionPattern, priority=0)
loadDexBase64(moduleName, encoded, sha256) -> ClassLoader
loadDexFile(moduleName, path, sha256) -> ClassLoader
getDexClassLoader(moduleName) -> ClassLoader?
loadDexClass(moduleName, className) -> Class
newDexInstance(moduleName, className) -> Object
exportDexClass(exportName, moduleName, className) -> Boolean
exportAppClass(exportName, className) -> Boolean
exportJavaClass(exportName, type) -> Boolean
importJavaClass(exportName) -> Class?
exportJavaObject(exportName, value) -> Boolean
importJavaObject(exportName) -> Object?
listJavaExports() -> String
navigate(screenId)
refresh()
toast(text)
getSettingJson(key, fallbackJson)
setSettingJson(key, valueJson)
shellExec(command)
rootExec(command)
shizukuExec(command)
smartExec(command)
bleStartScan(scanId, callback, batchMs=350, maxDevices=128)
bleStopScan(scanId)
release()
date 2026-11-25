@@ -1,0 +1,39 @@
+getContext()
+getApplicationContext()
+getActivity()
+getClassLoader()
+getAndroid()
+getDevice()
+getPluginId()
+getDependencies() -> Array<String>
+getDependencyClassLoader() -> ClassLoader
+registerModule(section, title, description, icon, screenId, order)
+registerSettings(title, itemsJson, order=0)
+registerScreenHook(routePattern, screenId, mode="overlay", priority=0)
+registerSurfaceHook(surface, screenId, mode="overlay", priority=0)
+registerService(serviceId, priority=0)
+registerActionHook(actionPattern, priority=0)
+loadDexBase64(moduleName, encoded, sha256) -> ClassLoader
+loadDexFile(moduleName, path, sha256) -> ClassLoader
+getDexClassLoader(moduleName) -> ClassLoader?
+loadDexClass(moduleName, className) -> Class
+newDexInstance(moduleName, className) -> Object
+exportDexClass(exportName, moduleName, className) -> Boolean
+exportAppClass(exportName, className) -> Boolean
+exportJavaClass(exportName, type) -> Boolean
+importJavaClass(exportName) -> Class?
+exportJavaObject(exportName, value) -> Boolean
+importJavaObject(exportName) -> Object?
+listJavaExports() -> String
+navigate(screenId)
+refresh()
+toast(text)
+getSettingJson(key, fallbackJson)
+setSettingJson(key, valueJson)
+shellExec(command)
+rootExec(command)
+shizukuExec(command)
+smartExec(command)
+bleStartScan(scanId, callback, batchMs=350, maxDevices=128)
+bleStopScan(scanId)
+release()
