@@ -1,0 +1,6 @@
+find_java_class(class_name) -> Class?
+inspect_java_class(java_class) -> dict
+get_java_field(target, field_name) -> Object?
+set_java_field(target, field_name, value) -> Boolean
+invoke_java(target, method_name, *args) -> Object?
+new_java_instance(java_class, *args) -> Object
